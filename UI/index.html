@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Logistics</title>
+        <style>
+            .log {
+                /* border: 4px solid rgb(0, 0, 0); */
+                padding: 10px;
+                margin-top: 30px;
+                /* background-color: rgb(192, 186, 197); */
+
+            }
+            body {
+                text-align: center;
+                font-family: Arial, Helvetica, sans-serif;
+                background-image: url("logistics.jpg");
+                background-repeat: no-repeat;
+                background-position: 0px 200px;
+                background-size: 100% 550px;
+            }
+            div {
+                width: 20%;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+            }
+            button {
+                padding: 5px;
+                margin: 10px auto;
+                text-align: center;
+                text-decoration: none;
+                width: 30%;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="log">
+            <h1>Tracking Zone</h1>
+            <p>Here You Can Track Your Products.. </p>
+            <button onclick="getseller()">Seller</button>
+            
+            <button onclick="getCoustomer()">Coustmer</button>
+            <br/>
+            <label for="trackproduct">Put Costrumer Address For Track The Product</label>
+            <br>
+            <input type="text" id="trackproduct" />
+            <button onclick="track()">Track</button>
+        </div>
+    </body>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.1/ethers.umd.js"
+        type="application/javascript"
+    ></script>
+
+    <script>
+        
+        
+        let LogisticsContract;
+        let signer;
+        let provider;
+        let accounts;
+        let LogisticsContractABI;
+        let LogisticsContractAddress;
+        
+
+        async function getseller() {
+            const saller = await LogisticsContract.Saller();
+            console.log(saller.toString());
+    
+        }
+        
+        async function getCoustomer() {
+            const coustomer = await LogisticsContract.coustmer();
+            console.log(coustomer.toString());
+    
+        }
+
+        async function track() {
+            const addr = document.getElementById("trackproduct").value;
+            const track = await LogisticsContract.Track(addr);
+            console.log(track.toString());
+    
+        }
+       
+
+        async function doInitMetamask() {
+            LogisticsContractAddress = "0x4aBca7dccB3652b9B43a0F5753B8E1c77fDBD427";
+            LogisticsContractABI = [
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_saller",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+            },
+            {
+            "anonymous": false,
+            "inputs": [
+                {
+                "indexed": false,
+                "internalType": "address",
+                "name": "coustmer",
+                "type": "address"
+                },
+                {
+                "components": [
+                    {
+                    "internalType": "bool",
+                    "name": "Approve",
+                    "type": "bool"
+                    },
+                    {
+                    "internalType": "string",
+                    "name": "orderStatus",
+                    "type": "string"
+                    },
+                    {
+                    "internalType": "string",
+                    "name": "Customs1",
+                    "type": "string"
+                    },
+                    {
+                    "internalType": "string",
+                    "name": "Customs2",
+                    "type": "string"
+                    },
+                    {
+                    "internalType": "string",
+                    "name": "Delivery",
+                    "type": "string"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Logistics.Packageitem",
+                "name": "Data",
+                "type": "tuple"
+                }
+            ],
+            "name": "Register",
+            "type": "event"
+            },
+            {
+            "inputs": [],
+            "name": "Custom1",
+            "outputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [],
+            "name": "Custom2",
+            "outputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [],
+            "name": "Delivery",
+            "outputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [],
+            "name": "Saller",
+            "outputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "name": "Track",
+            "outputs": [
+                {
+                "internalType": "bool",
+                "name": "Approve",
+                "type": "bool"
+                },
+                {
+                "internalType": "string",
+                "name": "orderStatus",
+                "type": "string"
+                },
+                {
+                "internalType": "string",
+                "name": "Customs1",
+                "type": "string"
+                },
+                {
+                "internalType": "string",
+                "name": "Customs2",
+                "type": "string"
+                },
+                {
+                "internalType": "string",
+                "name": "Delivery",
+                "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [],
+            "name": "coustmer",
+            "outputs": [
+                {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_coustomer",
+                "type": "address"
+                }
+            ],
+            "name": "SetCoustomer",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_custom1",
+                "type": "address"
+                },
+                {
+                "internalType": "address",
+                "name": "_custom2",
+                "type": "address"
+                }
+            ],
+            "name": "setCustoms",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_delivery",
+                "type": "address"
+                }
+            ],
+            "name": "setDeliveryHub",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_orderaddress",
+                "type": "address"
+                }
+            ],
+            "name": "ConfirmOrder",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_orderaddress",
+                "type": "address"
+                }
+            ],
+            "name": "ApproveCustom1",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_orderaddress",
+                "type": "address"
+                }
+            ],
+            "name": "ApproveCustom2",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_orderaddress",
+                "type": "address"
+                }
+            ],
+            "name": "DeliveryHub",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "inputs": [
+                {
+                "internalType": "address",
+                "name": "_orderaddress",
+                "type": "address"
+                }
+            ],
+            "name": "DeliveryDone",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+            }
+        ]
+
+            provider = new ethers.providers.Web3Provider(web3.currentProvider);
+
+            // try {
+            //     await provider.send("eth_requestAccounts", []);
+            // } catch {
+            //     console.log("Connection error");
+            // }
+
+            accounts = await provider.listAccounts();
+            console.log(accounts);
+            
+            signer = await provider.getSigner(accounts[0]);
+            console.log(signer);
+
+            console.log(LogisticsContractAddress);
+            console.log(LogisticsContractABI);
+            
+            LogisticsContract = new ethers.Contract( LogisticsContractAddress, LogisticsContractABI, signer);
+        }
+        doInitMetamask();
+    </script>
+</html>
